@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <title>PicNic Area - Italia</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body style="background-color: rgba(255, 0, 0, 0.5);
+               background-image:
+                 linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow),
+                 linear-gradient(-45deg,yellow 25%,transparent 25%,transparent 75%,yellow 75%,yellow); 
+               background-size: 40px 40px;
+               background-repeat: repeat;">
+    <script>
+      function redirect(link) {
+        window.location.href = link;
+      }
+    </script>
+
+    <div class="container-fluid text-center" style="margin-bottom: 1cm;
+                                                    margin-top: 1cm;">
+      <h1>
+        <img
+          src="https://previews.123rf.com/images/greatnotions/greatnotions1509/greatnotions150908610/45169705-una-sala-da-camper-da-pranzo-%C3%A8-un-tavolo-da-picnic-in-un-parco-prendete-questo-disegno-con-voi-sul-v.jpg"
+          alt="Disegno cesto da PicNic"
+          class="img-fluid"
+          height="10%"
+          width="10%"
+        />
+        PicNic Area
+      </h1>
+    </div>
+    
+    <table class="table table-hover" style="width: 50%;
+                                            border-radius: 20px;
+                                            background-color: white;
+                                            color: black;
+                                            font-size: 25px;
+                                            text-align: center;
+                                            vertical-align: middle;
+                                            margin-left:auto;
+                                            margin-right:auto;">
+      <tr onclick="redirect('mappa')" style="height: 65px"> <th> Visualizza la mappa e lista delle aree da PicNic. </th></tr>
+      <tr onclick="redirect('inserisci')" style="height: 65px"> <th> Inserisci una nuova area da PicNic. </th></tr>
+      <tr onclick="redirect('rimuovi')" style="height: 65px"> <th> Rimuovi un'area da PicNic. </th></tr>
+      <tr onclick="redirect('cerca')" style="height: 65px"> <th> Cerca un'area da PicNic. </th></tr>
+      <tr onclick="redirect('cerca')" style="height: 65px"> <th> Modifica un'area da PicNic. </th></tr>
+    </table>
+
+
+    <footer class="mt-5 p-3 bg-dark text-white text-center">
+      Emanuele Grasso - Matricola n°307771 - A.A. 2022/2023
+      <br>
+      <p>Progetto autunnale di Piattaforme Digitali per la gestione del Territorio - Facoltà di Informatica Applicata, Università degli Studi di Urbino "Carlo Bo"</p>
+    </footer>
+  </body>
+</html>
