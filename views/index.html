@@ -10,10 +10,10 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
-  <body style="background-color: rgba(255, 0, 0, 0.5);
+  <body style="background-color: red;
                background-image:
-                 linear-gradient(45deg, yellow 25%, transparent 25%, transparent 75%, yellow 75%, yellow),
-                 linear-gradient(-45deg,yellow 25%,transparent 25%,transparent 75%,yellow 75%,yellow); 
+                 linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white),
+                 linear-gradient(-45deg,white 25%,transparent 25%,transparent 75%,white 75%,white); 
                background-size: 40px 40px;
                background-repeat: repeat;">
     <script>
@@ -22,13 +22,16 @@
       }
     </script>
 
-    <div class="container-fluid text-center" style="margin-bottom: 1cm;
-                                                    margin-top: 1cm;">
+    <div class="container-fluid text-center" style="margin-bottom: 0.7cm;
+                                                    margin-top: 0.7cm;
+                                                    background-color: white;">
       <h1>
         <img
           src="https://previews.123rf.com/images/greatnotions/greatnotions1509/greatnotions150908610/45169705-una-sala-da-camper-da-pranzo-%C3%A8-un-tavolo-da-picnic-in-un-parco-prendete-questo-disegno-con-voi-sul-v.jpg"
           alt="Disegno cesto da PicNic"
           class="img-fluid"
+          style="margin-top: 0.2cm;
+                 margin-bottom: 0.2cm;" 
           height="10%"
           width="10%"
         />
@@ -37,7 +40,10 @@
     </div>
     
     <table class="table table-hover" style="width: 50%;
-                                            border-radius: 20px;
+                                            border: 3px solid black;
+                                            border-radius: 1em;
+                                            border-collapse: separate;
+                                            overflow: hidden;
                                             background-color: white;
                                             color: black;
                                             font-size: 25px;
@@ -45,11 +51,11 @@
                                             vertical-align: middle;
                                             margin-left:auto;
                                             margin-right:auto;">
-      <tr onclick="redirect('mappa')" style="height: 65px"> <th> Visualizza la mappa e lista delle aree da PicNic. </th></tr>
-      <tr onclick="redirect('inserisci')" style="height: 65px"> <th> Inserisci una nuova area da PicNic. </th></tr>
-      <tr onclick="redirect('rimuovi')" style="height: 65px"> <th> Rimuovi un'area da PicNic. </th></tr>
-      <tr onclick="redirect('cerca')" style="height: 65px"> <th> Cerca un'area da PicNic. </th></tr>
-      <tr onclick="redirect('cerca')" style="height: 65px"> <th> Modifica un'area da PicNic. </th></tr>
+      <tr onclick="redirect('map')" style="height: 63px"> <th> Visualizza la mappa e la lista delle aree da PicNic. </th></tr>
+      <tr onclick="redirect('insert')" style="height: 63px"> <th> Inserisci una nuova area da PicNic. </th></tr>
+      <tr onclick="redirect('remove')" style="height: 63px"> <th> Rimuovi un'area da PicNic. </th></tr>
+      <tr onclick="redirect('search')" style="height: 63px"> <th> Cerca un'area da PicNic. </th></tr>
+      <tr onclick="redirect('modify')" style="height: 63px; border-bottom: white"> <th> Modifica un'area da PicNic. </th></tr>
     </table>
 
 
