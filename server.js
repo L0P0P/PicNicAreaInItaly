@@ -4,6 +4,7 @@ const data = require("fs");
 const app = express();
 
 const dataReader = data.readFileSync(__dirname + '/public/data.json');
+const parser = JSON.parse(dataReader);
 
 app.use(express.static('public'))
 app.use(express.json());
@@ -22,6 +23,21 @@ app.get('/map', (req, res) => {
   res.render(__dirname + '/views/map.html');
 });
 
+app.get('/insert', (req, res) => {
+  res.render(__dirname + '/views/insert.html');
+});
+
+app.get('/remove', (req, res) => {
+  res.render(__dirname + '/views/remove.html');
+});
+
+
+
+app.get('/rawdata', (req, res) => {
+  console.log("Richiesta dei dati puri.");
+  res.send(parser);
+});
+
 app.get('/success', (req, res) => {
   res.render(__dirname + '/views/success.html');
 });
@@ -30,18 +46,9 @@ app.get('/error', (req, res) => {
   res.render(__dirname + '/views/error.html');
 });
 
-app.get('/rawdata', (req, res) => {
-  console.log("Richiesta dei dati puri.");
-  const parser = JSON.parse(dataReader);
-  res.send(parser);
-});
 
-app.get('/insert', (req, res) => {
-  res.render(__dirname + '/views/insert.html');
-});
 
 app.post('/insertion', (req, res) => {
-  const parser = JSON.parse(dataReader);
   let check = false;
   
   if(req.body != undefined) {
@@ -55,8 +62,7 @@ app.post('/insertion', (req, res) => {
     }
 
     if(check) {
-      console.log(1);
-      res.status(400).send('Errore');
+      res.sendStatus(400);
     } else {
       //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
       parser.push(req.body);
@@ -65,12 +71,43 @@ app.post('/insertion', (req, res) => {
       data.writeFileSync("public/data.json", JSON.stringify(parser));
   
       //risposta del server
-      res.status(200).send(req.body);
+      res.sendStatus(200);
     }
   } else {
-    res.status(400).send('Errore');
+    res.sendStatus(400);
   }
+});
+
+
+
+app.delete('/removal', (req, res) => {
+  let id = -1;
   
+  if(req.body != undefined) {
+    const position = [ req.body.clatitudine, req.body.clongitudine ]
+
+    //controllo che non venga inserita un veicolo già registrato
+    for (let i = 0; i < parser.length; i++) {
+      if(position[0] == parser[i].clatitudine && position[1] == parser[i].clongitudine){
+        id = i;
+      }
+    }
+
+    if(id == -1) {
+      res.sendStatus(400);
+    } else {
+      //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
+      parser.splice(id, 1);
+      
+      //aggiorno il file
+      data.writeFileSync("public/data.json", JSON.stringify(parser));
+  
+      //risposta del server
+      res.sendStatus(200);
+    }
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 app.set('port', process.env.PORT || 3000);

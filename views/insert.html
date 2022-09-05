@@ -85,9 +85,9 @@
 
   <script>
     const element = document.getElementById("insertBtn");
-    element.addEventListener("click", postFilm);
+    element.addEventListener("click", newArea);
 
-    function postFilm() {
+    async function newArea() {
       const comune      = document.getElementById("ccomune").value;
       const provincia   = document.getElementById("cprovincia").value.toUpperCase();
       const regione     = document.getElementById("cregione").value;
@@ -108,20 +108,22 @@
                      };
 
       //POST request: parameters via body (data in JSON format)
-      fetch('http://localhost:3000/insertion/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        window.location.href = 'success';
-      })
-      .catch((error), function() {
-        window.location.href = 'error';
-      })
+      const response = await fetch('http://localhost:3000/insertion/', {
+                                    method: 'POST',
+                                    headers: {
+                                      Accept: 'application/json',                                              
+                                      'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(data),
+                                  })
+      
+      const msg = await response.text();
+
+      if(msg == 'OK') {
+        window.location = 'success';
+      } else {
+        window.location = 'error';
+      }
     }
   </script>
 </html>
