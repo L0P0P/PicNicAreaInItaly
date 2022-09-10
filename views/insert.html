@@ -31,7 +31,7 @@
           type="button"
           class="btn"
           id="returnBtn"
-          onclick="window.location.href ='/';">
+          onclick="window.location ='/';">
         Torna alla pagina iniziale
       </button>
     </div>
@@ -45,7 +45,7 @@
       <form class="m-4" id="formInsertion">
         
         <label for="cnome" class="form-label">Nome</label>
-        <input type="text" class="form-control" name="cnome" id="cnome" required/>
+        <input type="text" class="form-control" name="cnome" id="cnome"/>
       
         <br />
         
@@ -95,34 +95,35 @@
       const latitudine  = document.getElementById("clatitudine").value;
       const longitudine = document.getElementById("clongitudine").value;
       
-      // data to be sent via body POST
-      const data = { ccomune: comune,
-                     cprovincia: provincia, 
-                     cregione: regione,
-                     cnome: nome,
-                     canno_inserimento: "2022",
-                     cdata_e_ora_inserimento: "",
-                     cidentificatore_in_openstreetmap: "",
-                     clongitudine: longitudine,
-                     clatitudine: latitudine,
-                     };
+      if(comune != '' && provincia != '' && regione != '' && latitudine != '' && longitudine != '') {
 
-      //POST request: parameters via body (data in JSON format)
-      const response = await fetch('http://localhost:3000/insertion/', {
-                                    method: 'POST',
-                                    headers: {
-                                      Accept: 'application/json',                                              
-                                      'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(data),
-                                  })
-      
-      const msg = await response.text();
+        // data to be sent via body POST
+        const data = { ccomune: comune,
+                      cprovincia: provincia, 
+                      cregione: regione,
+                      cnome: nome,
+                      canno_inserimento: "2022",
+                      cdata_e_ora_inserimento: "",
+                      cidentificatore_in_openstreetmap: "",
+                      clongitudine: longitudine,
+                      clatitudine: latitudine,
+                      };
 
-      if(msg == 'OK') {
-        window.location = 'success';
-      } else {
-        window.location = 'error';
+        //POST request: parameters via body (data in JSON format)
+        const response = await fetch('http://localhost:3000/insertion/', {
+                                      method: 'POST',
+                                      headers: {
+                                        Accept: 'application/json',                                              
+                                        'Content-Type': 'application/json',
+                                      },
+                                      body: JSON.stringify(data),
+                                    })
+
+        if(response.ok) {
+          window.location = 'success';
+        } else {
+          window.location = 'error';
+        }
       }
     }
   </script>

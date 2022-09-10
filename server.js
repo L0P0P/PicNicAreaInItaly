@@ -31,6 +31,10 @@ app.get('/remove', (req, res) => {
   res.render(__dirname + '/views/remove.html');
 });
 
+app.get('/search', (req, res) => {
+  res.render(__dirname + '/views/search.html');
+});
+
 
 
 app.get('/rawdata', (req, res) => {
@@ -44,6 +48,29 @@ app.get('/success', (req, res) => {
 
 app.get('/error', (req, res) => {
   res.render(__dirname + '/views/error.html');
+});
+
+
+app.get('/research', (req, res) => {
+  if(req.query.latitudine != '' && req.query.longitudine != '') {
+    const position = [ req.query.latitudine, req.query.longitudine ];
+    let id = -1;
+
+    for (let i = 0; i < parser.length; i++) {
+      if(position[0] == parser[i].clatitudine && position[1] == parser[i].clongitudine){
+        id = i;
+      }
+    }
+
+    if(id == -1) {
+      res.sendStatus(400);
+    } else {
+      res.status(200).send(parser[id]);
+    }
+    
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 
@@ -84,7 +111,7 @@ app.delete('/removal', (req, res) => {
   let id = -1;
   
   if(req.body != undefined) {
-    const position = [ req.body.clatitudine, req.body.clongitudine ]
+    const position = [ req.body.clatitudine, req.body.clongitudine ];
 
     //controllo che non venga inserita un veicolo già registrato
     for (let i = 0; i < parser.length; i++) {

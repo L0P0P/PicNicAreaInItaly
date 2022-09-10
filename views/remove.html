@@ -71,27 +71,27 @@
       const latitudine  = document.getElementById("clatitudine").value;
       const longitudine = document.getElementById("clongitudine").value;
       
-      // data to be sent via body POST
-      const position = { clongitudine: longitudine,
-                         clatitudine: latitudine,
-                       };
+      if(latitudine != '' && longitudine != '') {
+        // data to be sent via body POST
+        const position = { clongitudine: longitudine,
+                          clatitudine: latitudine,
+                        };
 
-      //POST request: parameters via body (data in JSON format)
-      const response = await fetch('http://localhost:3000/removal/', {
-                                    method: 'DELETE',
-                                    headers: {      
-                                      Accept: 'application/json',                                        
-                                      'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(position),
-                                  })
-      
-      const msg = await response.text();
-      
-      if(msg == 'OK') {
-        window.location = 'success';
-      } else {
-        window.location = 'error';
+        //POST request: parameters via body (data in JSON format)
+        const response = await fetch('http://localhost:3000/removal/', {
+                                      method: 'DELETE',
+                                      headers: {      
+                                        Accept: 'application/json',                                        
+                                        'Content-Type': 'application/json',
+                                      },
+                                      body: JSON.stringify(position),
+                                    })
+        
+        if(response.ok) {
+          window.location = 'success';
+        } else {
+          window.location = 'error';
+        }
       }
     }
   </script>
