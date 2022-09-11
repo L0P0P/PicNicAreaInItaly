@@ -35,6 +35,10 @@ app.get('/search', (req, res) => {
   res.render(__dirname + '/views/search.html');
 });
 
+app.get('/modify', (req, res) => {
+  res.render(__dirname + '/views/modify.html');
+});
+
 
 
 app.get('/rawdata', (req, res) => {
@@ -129,6 +133,36 @@ app.delete('/removal', (req, res) => {
       //aggiorno il file
       data.writeFileSync("public/data.json", JSON.stringify(parser));
   
+      //risposta del server
+      res.sendStatus(200);
+    }
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+
+app.put('/modification', (req, res) => {
+  let id = -1;
+  
+  if(req.body != undefined) {
+
+    //controllo che non venga inserita un veicolo già registrato
+    for (let i = 0; i < parser.length; i++) {
+      if(req.body.clatitudine == parser[i].clatitudine && req.body.clongitudine == parser[i].clongitudine){
+        id = i;
+      }
+    }
+
+    if(id == -1 || parser[id].cnome == req.body.cnome) {
+      res.sendStatus(400);
+    } else {
+      //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
+      parser[id].cnome = req.body.cnome;
+      
+      //aggiorno il file
+      data.writeFileSync("public/data.json", JSON.stringify(parser));
+
       //risposta del server
       res.sendStatus(200);
     }
