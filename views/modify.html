@@ -39,7 +39,7 @@
     <div class="container-fluid text-center" id="formDiv">
       <br />
       <h5 class="text-center">
-        Compila i campi e premi modifica per modificare il nome di un'area PicNic
+        Compila i campi e premi "Modifica" per modificare il nome di un'area PicNic
       </h5>
 
       <form class="m-4" id="formInsertion">
@@ -79,12 +79,13 @@
       const nome = document.getElementById("newName").value;
       
       if(latitudine != '' && longitudine != '') {
-        // data to be sent via body POST
+        //Data to be sent via body PUT
         const data = { clongitudine: longitudine,
                        clatitudine: latitudine,
                        cnome: nome,
                       };
 
+        //PUT request: parameters via body (data in JSON format)
         const response = await fetch('http://localhost:3000/modification/', {
                                       method: 'PUT',
                                       headers: {      
@@ -94,6 +95,7 @@
                                       body: JSON.stringify(data),
                                     })
         
+        //PUT response
         if(response.ok) {
           window.location = 'success';
         } else {

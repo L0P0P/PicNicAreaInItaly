@@ -1,174 +1,159 @@
-const { json } = require("express");
+//Forms declaration
 const express = require("express");
+const Joi = require('joi');
 const data = require("fs");
 const app = express();
 
+//Json file reading and parsing
 const dataReader = data.readFileSync(__dirname + '/public/data.json');
 const parser = JSON.parse(dataReader);
 
-app.use(express.static('public'))
+//Static file in public for css
+app.use(express.static('public'));
+
+//Json file broker
 app.use(express.json());
 
-// view engine setup
+//View engine setup
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname);
 
+/* ------------------- ENDPOINT GET INDEX PAGE ------------------- */
+// N° 1 - Empty endpoint for homepage.
 app.get('/', (req, res) => {
   res.render(__dirname + '/views/index.html');
 });
 
-// ----- Mappa: elaborazione lato server -----
+// N° 2 - Endpoint for the map page.
 app.get('/map', (req, res) => {
   res.render(__dirname + '/views/map.html');
 });
 
+// N° 3 - Endpoint for the add-area page.
 app.get('/insert', (req, res) => {
   res.render(__dirname + '/views/insert.html');
 });
 
+// N° 4 - Endpoint for the remove-area page.
 app.get('/remove', (req, res) => {
   res.render(__dirname + '/views/remove.html');
 });
 
+// N° 5 - Endpoint for the search-area page.
 app.get('/search', (req, res) => {
   res.render(__dirname + '/views/search.html');
 });
 
+// N° 6 - Endpoint for the modify-area page.
 app.get('/modify', (req, res) => {
   res.render(__dirname + '/views/modify.html');
 });
 
 
-
+/* ---------------------- ENDPOINT GET --------------------- */
+// N° 1 - Endpoint for the json-data.
 app.get('/rawdata', (req, res) => {
-  console.log("Richiesta dei dati puri.");
+  console.log("Richiesta dei dati puri, l'operazione potrebbe richiedere alcuni minuti...")
   res.send(parser);
 });
 
+// N° 2 - Endpoint for the success page.
 app.get('/success', (req, res) => {
   res.render(__dirname + '/views/success.html');
 });
 
+// N° 3 - Endpoint for the error page.
 app.get('/error', (req, res) => {
   res.render(__dirname + '/views/error.html');
 });
 
 
-app.get('/research', (req, res) => {
-  if(req.query.latitudine != '' && req.query.longitudine != '') {
-    const position = [ req.query.latitudine, req.query.longitudine ];
-    let id = -1;
-
-    for (let i = 0; i < parser.length; i++) {
-      if(position[0] == parser[i].clatitudine && position[1] == parser[i].clongitudine){
-        id = i;
-      }
-    }
-
-    if(id == -1) {
-      res.sendStatus(400);
-    } else {
-      res.status(200).send(parser[id]);
-    }
+/* ---------------------- UTILITY FUNCTION --------------------- */
+//Function created for code's cleaning
+function validateArea(area) {
+  const schema = Joi.object({
+    ccomune:                            Joi.string(),
+    cprovincia:                         Joi.string(),
+    cregione:                           Joi.string(),
+    cnome:                              Joi.string(),
+    canno_inserimento:                  Joi.number(),
+    cdata_e_ora_inserimento:            Joi.string().allow(''),
+    cidentificatore_in_openstreetmap:   Joi.string().allow(''),
     
-  } else {
-    res.sendStatus(400);
-  }
-});
+    clatitudine: Joi.number()
+                    .required(),
+    clongitudine: Joi.number()
+                     .required()
+  });
+
+  return schema.validate(area);
+}
 
 
-
+/* ---------------------- UTILITY ENDPOINT --------------------- */
+// N° 1 - Endpoint for the POST insert operation.
 app.post('/insertion', (req, res) => {
-  let check = false;
-  
-  if(req.body != undefined) {
-    let position = [ req.body.clatitudine, req.body.clongitudine ]
+  const { error } = validateArea(req.body);
 
-    //controllo che non venga inserita un veicolo già registrato
-    for (let i = 0; i < parser.length; i++) {
-      if(position[0] == parser[i].clatitudine && position[1] == parser[i].clongitudine){
-       check = true;
-      }
-    }
+  // 400 Bad Request
+  if(error) return res.sendStatus(400);
 
-    if(check) {
-      res.sendStatus(400);
-    } else {
-      //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
-      parser.push(req.body);
-      
-      //aggiorno il file
-      data.writeFileSync("public/data.json", JSON.stringify(parser));
-  
-      //risposta del server
-      res.sendStatus(200);
-    }
-  } else {
-    res.sendStatus(400);
-  }
+  //Adds the element in the parsed file.
+  parser.push(req.body);
+  //Updates the JSON file
+  data.writeFileSync("public/data.json", JSON.stringify(parser));
+  //200 Ok
+  return res.sendStatus(200);
 });
 
-
-
-app.delete('/removal', (req, res) => {
-  let id = -1;
+// N° 2 - Endpoint for the DELETE removing operation.
+app.delete('/removing', (req, res) => {
+  const area = parser.find(a => a.clongitudine === req.body.clongitudine &&
+                                a.clatitudine === req.body.clatitudine);
   
-  if(req.body != undefined) {
-    const position = [ req.body.clatitudine, req.body.clongitudine ];
+  //404 Not found
+  if(!area) return res.sendStatus(404);
 
-    //controllo che non venga inserita un veicolo già registrato
-    for (let i = 0; i < parser.length; i++) {
-      if(position[0] == parser[i].clatitudine && position[1] == parser[i].clongitudine){
-        id = i;
-      }
-    }
-
-    if(id == -1) {
-      res.sendStatus(400);
-    } else {
-      //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
-      parser.splice(id, 1);
-      
-      //aggiorno il file
-      data.writeFileSync("public/data.json", JSON.stringify(parser));
-  
-      //risposta del server
-      res.sendStatus(200);
-    }
-  } else {
-    res.sendStatus(400);
-  }
+  //Removes the element in the parsed file.
+  parser.splice(parser.indexOf(area), 1);
+  //Updates the JSON file
+  data.writeFileSync("public/data.json", JSON.stringify(parser));
+  //200 Ok
+  return res.sendStatus(200);
 });
 
+// N° 3 - Endpoint for the GET research operation.
+app.get('/research', (req, res) => {
+  const area = parser.find(a => a.clongitudine === req.query.clongitudine &&
+                                a.clatitudine === req.query.clatitudine);
 
+  //404 Not found
+  if(!area) return res.sendStatus(404);
+  //200 Ok
+  return res.status(200).send(parser[parser.indexOf(area)]);
+});
+
+// N° 4 - Endpoint for the PUT modification operation.
 app.put('/modification', (req, res) => {
-  let id = -1;
-  
-  if(req.body != undefined) {
+  const area = parser.find(a => a.clongitudine === req.body.clongitudine &&
+                                a.clatitudine === req.body.clatitudine);
 
-    //controllo che non venga inserita un veicolo già registrato
-    for (let i = 0; i < parser.length; i++) {
-      if(req.body.clatitudine == parser[i].clatitudine && req.body.clongitudine == parser[i].clongitudine){
-        id = i;
-      }
-    }
+  //404 Not found
+  if(!area) return res.sendStatus(404);
 
-    if(id == -1 || parser[id].cnome == req.body.cnome) {
-      res.sendStatus(400);
-    } else {
-      //push() ritorna la nuova lunghezza del vett quindi lo assegno all'id
-      parser[id].cnome = req.body.cnome;
-      
-      //aggiorno il file
-      data.writeFileSync("public/data.json", JSON.stringify(parser));
-
-      //risposta del server
-      res.sendStatus(200);
-    }
-  } else {
-    res.sendStatus(400);
-  }
+  const { error } = validateArea(req.body);
+  //400 Bad Request if parameters aren't good
+  if(error) return res.sendStatus(400);
+  //400 Bad Request if the new name is equals than the old one
+  if(parser[parser.indexOf(area)].cnome === req.body.cnome) return res.sendStatus(400);
+    
+  //Updates the old name with the new one in the parsed file
+  parser[parser.indexOf(area)].cnome = req.body.cnome;
+  //Updates the JSON file
+  data.writeFileSync("public/data.json", JSON.stringify(parser));
+  //200 Ok
+  return res.sendStatus(200);
 });
 
 app.set('port', process.env.PORT || 3000);

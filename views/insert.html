@@ -97,7 +97,7 @@
       
       if(comune != '' && provincia != '' && regione != '' && latitudine != '' && longitudine != '') {
 
-        // data to be sent via body POST
+        // Data to be sent via body POST
         const data = { ccomune: comune,
                       cprovincia: provincia, 
                       cregione: regione,
@@ -118,7 +118,8 @@
                                       },
                                       body: JSON.stringify(data),
                                     })
-
+        
+        //POST response
         if(response.ok) {
           window.location = 'success';
         } else {

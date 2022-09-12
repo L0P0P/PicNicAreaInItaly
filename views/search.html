@@ -75,16 +75,15 @@
       const longitudine = document.getElementById("clongitudine").value;
       
       
-      // data to be sent via body POST
+      //Data to be sent via query
       const position = { clongitudine: longitudine,
-                        clatitudine: latitudine,
+                         clatitudine: latitudine,
                       };
 
-      //POST request: parameters via body (data in JSON format)
+      //GET request: parameters via query
+      const response = await fetch('http://localhost:3000/research?clongitudine=' + longitudine + '&clatitudine=' + latitudine);
       
-      const response = await fetch('http://localhost:3000/research?longitudine=' + longitudine + '&latitudine=' + latitudine);
-      
-
+      //GET response and rewrite area
       if(response.ok) {
         const area = await response.json();
 
@@ -94,11 +93,9 @@
                     'Regione: ' + area.cregione;
 
         document.getElementById('elem').innerHTML = table;
-
       } else {
         document.getElementById('elem').innerHTML = 'Errore, area PicNic inesistente.';
       }
-
     }
   </script>
 

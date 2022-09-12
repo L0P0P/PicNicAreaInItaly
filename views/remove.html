@@ -72,13 +72,13 @@
       const longitudine = document.getElementById("clongitudine").value;
       
       if(latitudine != '' && longitudine != '') {
-        // data to be sent via body POST
+        //Data to be sent via body DELETE
         const position = { clongitudine: longitudine,
                           clatitudine: latitudine,
                         };
 
-        //POST request: parameters via body (data in JSON format)
-        const response = await fetch('http://localhost:3000/removal/', {
+        //DELETE request: parameters via body (data in JSON format)
+        const response = await fetch('http://localhost:3000/removing/', {
                                       method: 'DELETE',
                                       headers: {      
                                         Accept: 'application/json',                                        
@@ -87,6 +87,7 @@
                                       body: JSON.stringify(position),
                                     })
         
+        //DELETE response
         if(response.ok) {
           window.location = 'success';
         } else {
