@@ -81,7 +81,7 @@
                       };
 
       //GET request: parameters via query
-      const response = await fetch('http://localhost:3000/research?clongitudine=' + longitudine + '&clatitudine=' + latitudine);
+      const response = await fetch('https://picnicareainitaly.glitch.me/research?clongitudine=' + longitudine + '&clatitudine=' + latitudine);
       
       //GET response and rewrite area
       if(response.ok) {
