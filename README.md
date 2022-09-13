@@ -34,7 +34,6 @@ Per far ciò sfruttiamo i dati forniti da datiopen.it costruendo delle API e un 
 - **Express.js**: framework open-source Node.js per la programmazione di applicazioni web e mobile, consente di creare potenti API di routing e di impostare middleware per rispondere alle richieste HTTP;
 - **fs**: modulo nativo che consete di eseguire diversi tipi di operazioni su file e directory;
 - **ejs**: Embedded Javascrypt Templating è un linguaggio di creazione di modelli che consente di generare markup HTML con Javascrypt;
-- **Joi**: framework open-source Node.js per la validazione di dati semplificata.
 
 ## Struttura del file data.json
 | ccomune | cprovincia | cregione | cnome | canno_inserimento | cdata_e_ora_inserimento | cidentificatore_in_openstreetmap | clongitudine |   clatitudine    |
