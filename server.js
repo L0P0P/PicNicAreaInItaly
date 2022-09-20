@@ -16,37 +16,37 @@ app.use(express.json());
 //View engine setup
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname);
+app.set('views', __dirname + '/views');
 
 /* ------------------- ENDPOINT GET INDEX PAGE ------------------- */
 // N° 1 - Empty endpoint for homepage.
 app.get('/', (req, res) => {
-  res.render(__dirname + '/views/index.html');
+  res.render('index.html');
 });
 
 // N° 2 - Endpoint for the map page.
 app.get('/map', (req, res) => {
-  res.render(__dirname + '/views/map.html');
+  res.render('map.html');
 });
 
 // N° 3 - Endpoint for the add-area page.
 app.get('/insert', (req, res) => {
-  res.render(__dirname + '/views/insert.html');
+  res.render('insert.html');
 });
 
 // N° 4 - Endpoint for the remove-area page.
 app.get('/remove', (req, res) => {
-  res.render(__dirname + '/views/remove.html');
+  res.render('remove.html');
 });
 
 // N° 5 - Endpoint for the search-area page.
 app.get('/search', (req, res) => {
-  res.render(__dirname + '/views/search.html');
+  res.render('search.html');
 });
 
 // N° 6 - Endpoint for the modify-area page.
 app.get('/modify', (req, res) => {
-  res.render(__dirname + '/views/modify.html');
+  res.render('modify.html');
 });
 
 
@@ -59,12 +59,12 @@ app.get('/rawdata', (req, res) => {
 
 // N° 2 - Endpoint for the success page.
 app.get('/success', (req, res) => {
-  res.render(__dirname + '/views/success.html');
+  res.render('success.html');
 });
 
 // N° 3 - Endpoint for the error page.
 app.get('/error', (req, res) => {
-  res.render(__dirname + '/views/error.html');
+  res.render('error.html');
 });
 
 /* ---------------------- UTILITY ENDPOINT --------------------- */
