@@ -77,7 +77,7 @@ app.post('/insertion');
 app.delete('/removing');
 
 ### GET per cercare un'area la cui posizione corrisponde a quella passata attraverso i parametri
-app.get('/research');
+app.get('/research);
 
 ### PUT per modificare la location la cui posizione corrisponde a quella passata come body
 app.put('/modification');
